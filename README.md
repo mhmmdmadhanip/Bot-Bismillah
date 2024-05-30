@@ -4,6 +4,7 @@
 
 - Python
 - Selenium
+- python-dotenv
 
 ## Installation Instructions
 
