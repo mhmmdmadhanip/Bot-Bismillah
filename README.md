@@ -5,6 +5,7 @@
 - Python
 - Selenium
 - python-dotenv
+- Chromedriver
 
 ## Installation Instructions
 
