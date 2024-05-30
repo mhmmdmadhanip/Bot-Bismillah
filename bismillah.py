@@ -17,12 +17,6 @@ siak_url = "https://academic.ui.ac.id/main/CoursePlan/CoursePlanEdit"
 down_string = "Universitas Indonesia"
 matkul_code = {}
 
-# with open("matkul.txt", "r") as file:
-#     for line in file:
-#         (kelas, nama) = line.split()
-#         matkul_code[nama] = kelas
-#         total_matkul += 1
-
 with open("matkul.json", "r") as json_file:
     matkul_code = json.load(json_file)
 
