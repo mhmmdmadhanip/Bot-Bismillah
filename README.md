@@ -1,4 +1,4 @@
-Here is the updated `README.md` file according to your specifications:
+HOW TO:
 
 ---
 
