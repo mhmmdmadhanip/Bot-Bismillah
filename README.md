@@ -1,4 +1,4 @@
-# SIAK WARRRRRRRRRRRRRRRRRRRRRR!!!!!!!!!!!!
+# SIAK WARRRRRRGGGGHHHHHHH!!!!!!!!!!!!
 
 ## Requirements
 
