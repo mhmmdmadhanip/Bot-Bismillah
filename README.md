@@ -1,7 +1,3 @@
-Here is the updated `README.md` file according to your specifications:
-
----
-
 # SIAK WARRRRRRRRRRRRRRRRRRRRRR!!!!!!!!!!!!
 
 ## Requirements
@@ -71,5 +67,3 @@ python bismillah.py
 
 - This script uses Selenium to automate the login process and course registration on a specified website. Ensure that you have the correct version of ChromeDriver matching your current Chrome browser version.
 - Adjust the script according to the actual structure and elements of the login page and course registration page you are automating.
-
----
