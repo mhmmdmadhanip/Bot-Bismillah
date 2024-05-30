@@ -1,3 +1,5 @@
+Here is the updated `README.md` file according to your specifications:
+
 ---
 
 # SIAK WARRRRRRRRRRRRRRRRRRRRRR!!!!!!!!!!!!
@@ -34,8 +36,8 @@
    Open `bismillah.py` in your preferred text editor. Update the following lines with your credentials and other necessary details:
    ```python
    # Update these lines with your credentials
-   username = "your_username"
-   password = "your_password"
+   username = "siak_username"
+   password = "siak_password"
    display_name = "Display name in home page" 
    ```
 
