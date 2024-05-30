@@ -19,9 +19,13 @@ with open("matkul.txt", "r") as file:
         matkul_code[nama] = kelas
         total_matkul += 1
 
-user = "muhammad.madhani"
-passw = "madans2205"
-display_name = "MUHAMMAD MADHANI PUTRA"
+#Isi ini sesuai akun
+user = ""
+passw = ""
+
+#Nama yang ada di atas kiri homepage (( person MUHAMMAD MADHANI PUTRA – Mahasiswa S1 Reguler Sistem Informasi (06.00.12.01) ))
+display_name = "" 
+
 chosen_matkul = False
 total_chosen = 0
 
