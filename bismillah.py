@@ -1,6 +1,11 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 import time
+import json
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 driver = webdriver.Chrome()
 
@@ -11,20 +16,25 @@ siak_url = "https://academic.ui.ac.id/main/CoursePlan/CoursePlanEdit"
 
 down_string = "Universitas Indonesia"
 matkul_code = {}
-total_matkul = 0
 
-with open("matkul.txt", "r") as file:
-    for line in file:
-        (kelas, nama) = line.split()
-        matkul_code[nama] = kelas
-        total_matkul += 1
+# with open("matkul.txt", "r") as file:
+#     for line in file:
+#         (kelas, nama) = line.split()
+#         matkul_code[nama] = kelas
+#         total_matkul += 1
+
+with open("matkul.json", "r") as json_file:
+    matkul_code = json.load(json_file)
+
+print(matkul_code)
+total_matkul = len(matkul_code)
 
 #Isi ini sesuai akun
-user = ""
-passw = ""
+user = os.getenv("USER")
+passw = os.getenv("PASSW")
 
 #Nama yang ada di atas kiri homepage (( person MUHAMMAD MADHANI PUTRA – Mahasiswa S1 Reguler Sistem Informasi (06.00.12.01) ))
-display_name = "" 
+display_name = os.getenv("DISPLAY_NAME")
 
 chosen_matkul = False
 total_chosen = 0

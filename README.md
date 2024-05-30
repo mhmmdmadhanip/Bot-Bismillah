@@ -1,3 +1,5 @@
+Here is the updated `README.md` file according to your specifications:
+
 ---
 
 # SIAK WARRRRRRRRRRRRRRRRRRRRRR!!!!!!!!!!!!
@@ -9,13 +11,13 @@
 
 ## Installation Instructions
 
-1. **Install Python 3.x**  
+1. **Install Python**  
    Ensure that you have Python installed. You can download it from [python.org](https://www.python.org/downloads/).
 
-2. **Install Selenium**  
-   Open your terminal and run the following command to install Selenium:
+2. **Install requirements.txt**  
+   Open your terminal, navigate to the directory containing the `requirements.txt` file, and run the following command to install all the required packages:
    ```sh
-   pip install selenium
+   pip install -r requirements.txt
    ```
 
 3. **Download ChromeDriver**  
@@ -31,25 +33,32 @@
    ```
 
 2. **Update the Script**  
-   Open `bismillah.py` in your preferred text editor. Update the following lines with your credentials and other necessary details:
-   ```python
-   # Update these lines with your credentials
-   username = "siak_username"
-   password = "siak_password"
-   display_name = "Display name in home page" 
+   Create a `.env` file in the root directory of your project. Open the `.env` file in a text editor and add the following lines, replacing the placeholders with your credentials:
+   ```env
+   USER=siak_username
+   PASSW=siak_password
+   DISPLAY_NAME=Display name in home page
    ```
 
 3. **Update the Course List**  
-   Ensure that the `matkul.txt` file is in the following format:
-   ```
-   kode_matkul-banyak_sks nama_matkul
+   Ensure that the `matkul.json` file is in the following format:
+   ```json
+   {
+       "nama_matkul": "kode_matkul-banyak_sks",
+       "nama_matkul": "kode_matkul-banyak_sks",
+       "nama_matkul": "kode_matkul-banyak_sks"
+   }
    ```
    Example:
+   ```json
+   {
+       "Struktur Data & Algoritma": "749641-4",
+       "Statistika & Probabilitas": "749738-3",
+       "Analisis dan Perancangan Sistem Informasi": "749565-3"
+   }
    ```
-   749641-4 SDA
-   749738-3 Statprob
-   749565-3 Anaper
-   ```
+
+   Update the `matkul.json` file with the course names and their corresponding codes.
 
 ## Running the Script
 
