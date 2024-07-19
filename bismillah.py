@@ -73,7 +73,6 @@ def war_page():
     return True
 
 if __name__ == "__main__":
-    #new_term = "Tahun Ajaran 2019/2020 Term 1"
     driver.get(login_url)
     time.sleep(0.5)
 
