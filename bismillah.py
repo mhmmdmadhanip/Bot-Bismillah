@@ -2,14 +2,11 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 import time
 import json
-from selenium.webdriver.chrome.options import Options
 from dotenv import load_dotenv
 import os
 
 load_dotenv()
-options = Options()
-options.add_argument("--headless=new")
-driver = webdriver.Chrome(options=options)
+driver = webdriver.Chrome()
 
 login_url = "https://academic.ui.ac.id/main/Authentication/"
 homepage_url = "https://academic.ui.ac.id/main/Welcome/"
