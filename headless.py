@@ -7,11 +7,9 @@ from selenium.webdriver.chrome.options import Options
 import os
 
 load_dotenv()
-
 options = Options()
 options.add_argument("--headless=new")
 driver = webdriver.Chrome(options=options)
-
 login_url = "https://academic.ui.ac.id/main/Authentication/"
 homepage_url = "https://academic.ui.ac.id/main/Welcome/"
 logout_url = "https://academic.ui.ac.id/main/Authentication/Logout"
@@ -70,8 +68,7 @@ def war_page():
                 print(f"{name} sudah dipilih! (kode: {kode})")
         except:
             print(f"{name} tidak ada! (kode: {kode})")
-            logout_page()
-            return False
+            continue
 
     driver.find_element(By.XPATH, "//input[@value='Simpan IRS']").click()
     return True
@@ -106,10 +103,8 @@ if __name__ == "__main__":
             time.sleep(1.5)
 
             print("bismillah menang")
-            if(not war_page()):
-                print("belom bisa bangT_T")
-                logout_page()
-                continue
+            
+            war_page()
 
             if (not chosen_matkul and total_chosen < total_matkul):
                 print("ngulang isi T_T")
