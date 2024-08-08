@@ -92,6 +92,10 @@ if __name__ == "__main__":
             login_page()
             continue
 
+        if "No role selected" in driver.page_source:
+            logout_page()
+            continue
+
         if driver.current_url == homepage_url:
             driver.get(siak_url)
             time.sleep(0.5)
