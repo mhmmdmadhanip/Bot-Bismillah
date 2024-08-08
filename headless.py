@@ -1,10 +1,13 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 import time
 import json
+from bs4 import BeautifulSoup
 from dotenv import load_dotenv
-import os
 from selenium.webdriver.chrome.options import Options
+import os
 import datetime
 
 load_dotenv()
@@ -112,7 +115,37 @@ if __name__ == "__main__":
                 driver.get(siak_url)
                 continue
             
+            while "CoursePlanSave" in driver.current_url:
+                driver.refresh()
+
+            while "CoursePlanDone" in driver.current_url and "IRS berhasil tersimpan!" not in driver.page_source:
+                driver.refresh()
+
             print(f"{get_current_time()} - alhamdulillah")
+            if "IRS berhasil tersimpan!" in driver.page_source:
+                try:
+                    view_check_link = WebDriverWait(driver, 10).until(
+                        EC.presence_of_element_located((By.XPATH, "//a[contains(.,'Lihat Pemeriksaan IRS')]"))
+                    )
+                    view_check_link.click()
+                    print(f"{get_current_time()} - 'Lihat Pemeriksaan IRS' Page")
+                    
+                    while "CoursePlanViewCheck" in driver.current_url and display_name not in driver.page_source:
+                        driver.refresh()
+                    
+                    if "CoursePlanViewCheck" in driver.current_url:
+                        soup = BeautifulSoup(driver.page_source, 'html.parser')
+                        rows = soup.find_all('tr')
+                        for row in rows:
+                            if " - " in row.text:
+                                print(row.text.strip())
+                            if "Kapasitas internal" in row.text:
+                                print(row.text.strip())
+                            if "Prasyarat" in row.text:
+                                break
+
+                except:
+                    print(f"{get_current_time()} - Gagal klik link 'Lihat Pemeriksaan IRS'")
             break
 
     while True:
