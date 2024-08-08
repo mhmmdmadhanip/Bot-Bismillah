@@ -85,10 +85,15 @@ if __name__ == "__main__":
         while display_name not in driver.page_source and "Fakultas Kedokteran" not in driver.page_source:
             driver.refresh()
 
+
         if "Fakultas Kedokteran" in driver.page_source:
             login_page()
             continue
 
+        if "No role selected" in driver.page_source:
+            logout_page()
+            continue
+        
         if driver.current_url == homepage_url:
             driver.get(siak_url)
             time.sleep(0.5)
