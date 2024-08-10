@@ -2,52 +2,46 @@
 
 ## Requirements
 
-- Python
-- Selenium
-- python-dotenv
-- Chromedriver
+- **Python**
+- **Selenium**
+- **python-dotenv**
+- **beautifulsoup4**
+- **lxml**
+- **Chromedriver**
 
 ## Installation Instructions
 
 1. **Install Python**  
-   Ensure that you have Python installed. You can download it from [python.org](https://www.python.org/downloads/).
+   Ensure Python is installed. Download from [python.org](https://www.python.org/downloads/).
 
-2. **Install requirements.txt**  
-   Open your terminal, navigate to the directory containing the `requirements.txt` file, and run the following command to install all the required packages:
+2. **Install Dependencies**  
+   Navigate to the project directory and install required packages:
    ```sh
    pip install -r requirements.txt
    ```
 
 3. **Download ChromeDriver**  
-   Download the version of ChromeDriver that matches your current Chrome browser version from [ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/downloads). Extract the downloaded file to a known location.
+   Download the version matching your Chrome browser from [ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/downloads). Extract it to a known location.
 
 ## Script Configuration
 
-1. **Clone this repository**  
-   Clone this repository to your local machine:
+1. **Clone the Repository**  
+   Clone the repository and navigate to the project directory:
    ```sh
-   git clone <repository-url>
-   cd <repository-directory>
+   git clone https://github.com/mhmmdmadhanip/Bot-Bismillah.git
+   cd Bot-Bismillah
    ```
 
-2. **Update the Script**  
-   Create a `.env` file in the root directory of your project. Open the `.env` file in a text editor and add the following lines, replacing the placeholders with your credentials:
+2. **Setup Environment Variables**  
+   Create a `.env` file in the project root and add your credentials:
    ```env
    USER=siak_username
    PASSW=siak_password
-   DISPLAY_NAME=Display name in home page
+   DISPLAY_NAME=display_name_on_homepage
    ```
 
-3. **Update the Course List**  
-   Ensure that the `matkul.json` file is in the following format:
-   ```json
-   {
-       "nama_matkul": "kode_matkul-banyak_sks",
-       "nama_matkul": "kode_matkul-banyak_sks",
-       "nama_matkul": "kode_matkul-banyak_sks"
-   }
-   ```
-   Example:
+3. **Update Course List**  
+   Ensure `matkul.json` is formatted like this:
    ```json
    {
        "Struktur Data & Algoritma": "749641-4",
@@ -55,17 +49,36 @@
        "Analisis dan Perancangan Sistem Informasi": "749565-3"
    }
    ```
+   "Course Name": "Course Code-SKS"
 
-   Update the `matkul.json` file with the course names and their corresponding codes.
+   You can write anything in course name, but the course code must be the same as in Siak page.
+
+4. **Adjust Parallel Processes**  
+   Modify `num_processes` to set the number of bots running simultaneously:
+   ```python
+   if __name__ == "__main__":
+       alhamdulillah_event = multiprocessing.Event()  # Shared event
+
+       num_processes = 5  # Set the number of parallel processes
+       processes = []
+
+       for i in range(num_processes):
+           p = multiprocessing.Process(target=run_script, args=(alhamdulillah_event, i + 1))
+           p.start()
+           processes.append(p)
+
+       for p in processes:
+           p.join()  # Wait for all processes to finish
+   ```
 
 ## Running the Script
 
-To run the script, open your terminal and navigate to the directory containing `bismillah.py`, then execute the following command:
+To start the script, navigate to the directory containing `bismillah.py` and run:
 ```sh
 python bismillah.py
 ```
 
 ## Notes
 
-- This script uses Selenium to automate the login process and course registration on a specified website. Ensure that you have the correct version of ChromeDriver matching your current Chrome browser version.
-- Adjust the script according to the actual structure and elements of the login page and course registration page you are automating.
+- The script uses Selenium to automate the login and course registration process. Ensure ChromeDriver matches your Chrome browser version.
+- Update the script to match the structure and elements of the target website.
