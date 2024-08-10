@@ -44,73 +44,92 @@ def read_local_html_file(filename):
         soup = BeautifulSoup(file, 'html.parser')
     return soup
 
-# 1. POST Request to login
-login_url = "https://academic.ui.ac.id/main/Authentication/Index"
-login_data = {
-    'u': os.getenv("USER"),
-    'p': os.getenv("PASSW")
-}
+# Function to log out the user
+def logout():
+    logout_url = "https://academic.ui.ac.id/main/Authentication/Logout"
+    get_with_retry(logout_url)
+    print(f"[{get_current_time()}] Logged out.")
 
-login_response = post_with_retry(login_url, login_data)
-print(f"[{get_current_time()}] Login successful.")
+# Main function to encapsulate the process
+def main():
+    while True:
+        try:
+            # 1. POST Request to login
+            login_url = "https://academic.ui.ac.id/main/Authentication/Index"
+            login_data = {
+                'u': os.getenv("USER"),
+                'p': os.getenv("PASSW")
+            }
 
-# 2. GET Request to ChangeRole
-change_role_url = "https://academic.ui.ac.id/main/Authentication/ChangeRole"
-change_role_response = get_with_retry(change_role_url)
-print(f"[{get_current_time()}] Role changed successfully.")
+            login_response = post_with_retry(login_url, login_data)
+            print(f"[{get_current_time()}] Login successful.")
 
-# 3. GET Request to CoursePlanEdit to retrieve the token
-course_plan_edit_url = "https://academic.ui.ac.id/main/CoursePlan/CoursePlanEdit"
-course_plan_edit_response = get_with_retry(course_plan_edit_url)
+            # 2. GET Request to ChangeRole
+            change_role_url = "https://academic.ui.ac.id/main/Authentication/ChangeRole"
+            change_role_response = get_with_retry(change_role_url)
+            print(f"[{get_current_time()}] Role changed successfully.")
 
-soup = BeautifulSoup(course_plan_edit_response.text, 'html.parser')
-token_input = soup.find('input', {'name': 'tokens'})
-if token_input:
-    token = token_input['value']
-    print(f"[{get_current_time()}] Token retrieved: {token}")
-else:
-    raise Exception("Token not found.")
+            # 3. GET Request to CoursePlanEdit to retrieve the token
+            course_plan_edit_url = "https://academic.ui.ac.id/main/CoursePlan/CoursePlanEdit"
+            course_plan_edit_response = get_with_retry(course_plan_edit_url)
 
-# 4. POST Request to save the course plan
-course_plan_save_url = "https://academic.ui.ac.id/main/CoursePlan/CoursePlanSave"
-course_plan_save_data = {
-    'tokens': token,
-    # 'c[Kode MK_Kurikulum]': 'CourseCode-SKS' ex: 'c[MD04600304_04.00.01.01-2021]': '750730-1',
-    'comment': None,
-    'submit': 'Simpan IRS'
-}
+            soup = BeautifulSoup(course_plan_edit_response.text, 'html.parser')
+            token_input = soup.find('input', {'name': 'tokens'})
+            if token_input:
+                token = token_input['value']
+                print(f"[{get_current_time()}] Token retrieved: {token}")
+                break  # Token found, exit the loop
+            else:
+                print(f"[{get_current_time()}] Token not found. Logging out and retrying...")
+                logout()
 
-course_plan_save_response = post_with_retry(course_plan_save_url, course_plan_save_data)
-print(f"[{get_current_time()}] Course plan saved successfully.")
+        except Exception as e:
+            print(f"[{get_current_time()}] Error occurred: {str(e)}. Retrying...")
+            logout()
 
-# 5. GET Request to CoursePlanDone
-course_plan_done_url = "https://academic.ui.ac.id/main/CoursePlan/CoursePlanDone"
-course_plan_done_response = get_with_retry(course_plan_done_url)
-print(f"[{get_current_time()}] Course plan submission done.")
+    # 4. POST Request to save the course plan
+    course_plan_save_url = "https://academic.ui.ac.id/main/CoursePlan/CoursePlanSave"
+    course_plan_save_data = {
+        'tokens': token,
+        # 'c[Kode MK_Kurikulum]': 'CourseCode-SKS' ex: 'c[MD04600304_04.00.01.01-2021]': '750730-1',
+        'comment': None,
+        'submit': 'Simpan IRS'
+    }
 
-# 6. GET Request to CoursePlanViewCheck
-course_plan_view_check_url = "https://academic.ui.ac.id/main/CoursePlan/CoursePlanViewCheck"
-course_plan_view_check_response = get_with_retry(course_plan_view_check_url)
+    course_plan_save_response = post_with_retry(course_plan_save_url, course_plan_save_data)
+    print(f"[{get_current_time()}] Course plan saved successfully.")
 
-# Save the response content to an HTML file
-html_filename = "course_plan_view_check.html"
+    # 5. GET Request to CoursePlanDone
+    course_plan_done_url = "https://academic.ui.ac.id/main/CoursePlan/CoursePlanDone"
+    course_plan_done_response = get_with_retry(course_plan_done_url)
+    print(f"[{get_current_time()}] Course plan submission done.")
 
-with open(html_filename, "w", encoding="utf-8") as file:
-    file.write(course_plan_view_check_response.text)
+    # 6. GET Request to CoursePlanViewCheck
+    course_plan_view_check_url = "https://academic.ui.ac.id/main/CoursePlan/CoursePlanViewCheck"
+    course_plan_view_check_response = get_with_retry(course_plan_view_check_url)
 
-print(f"[{get_current_time()}] HTML preview saved as {html_filename}.")
+    # Save the response content to an HTML file
+    html_filename = "course_plan_view_check.html"
 
-# Read and parse the saved HTML file
-soup = read_local_html_file(html_filename)
+    with open(html_filename, "w", encoding="utf-8") as file:
+        file.write(course_plan_view_check_response.text)
 
-# Extract and print the relevant data from the HTML
-rows = soup.find_all('tr')
-for row in rows:
-    if " - " in row.text:
-        print(f"{row.text.strip()}")
-    if "Kapasitas internal" in row.text:
-        print(f"{row.text.strip()}")
-    if "Prasyarat" in row.text:
-        break
+    print(f"[{get_current_time()}] HTML preview saved as {html_filename}.")
 
-print(f"[{get_current_time()}] Course plan view check successful. HTML preview read from {html_filename}.")
+    # Read and parse the saved HTML file
+    soup = read_local_html_file(html_filename)
+
+    # Extract and print the relevant data from the HTML
+    rows = soup.find_all('tr')
+    for row in rows:
+        if " - " in row.text:
+            print(f"{row.text.strip()}")
+        if "Kapasitas internal" in row.text:
+            print(f"{row.text.strip()}")
+        if "Prasyarat" in row.text:
+            break
+
+    print(f"[{get_current_time()}] Course plan view check successful. HTML preview read from {html_filename}.")
+
+# Start the main process
+main()
